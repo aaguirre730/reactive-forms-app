@@ -5,7 +5,13 @@
   "projects": {
     "reactive-forms-app": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "inlineTemplate": false,
+          "inlineStyle": true,
+          "changeDetection": "Default"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
