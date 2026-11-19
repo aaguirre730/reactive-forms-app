@@ -15,7 +15,7 @@ export class RegisterPageComponent {
 
   myForm: FormGroup = this.fb.group({
     name: ['',[Validators.required, Validators.pattern(FormUtils.namePattern)]],
-    email: ['',[Validators.required, Validators.pattern(FormUtils.emailPattern)]],
+    email: ['',[Validators.required, Validators.pattern(FormUtils.emailPattern)],[FormUtils.checkingServerResponse]],
     username: ['',[Validators.required, Validators.minLength(6), Validators.pattern(FormUtils.notOnlySpacesPattern)]],
     password: ['',[Validators.required, Validators.minLength(6), Validators.pattern(FormUtils.passwordPattern)]],
     password2: ['',[Validators.required, Validators.pattern(FormUtils.passwordPattern)]],
@@ -27,7 +27,7 @@ export class RegisterPageComponent {
 
 
   OnSave() {
-    if(this.myForm.invalid) {
+    if(this.myForm.invalid || this.myForm.pending) {
       this.myForm.markAllAsTouched();
       return;
     }

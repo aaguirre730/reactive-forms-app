@@ -1,5 +1,16 @@
 import { AbstractControl, FormArray, FormGroup, ValidationErrors } from '@angular/forms';
 
+async function sleep() {
+  // 1. Crea una Promesa ("te prometo que en un rato te aviso cuando termine")
+  return new Promise( resolve => {
+    // 2. Programa una alarma para que suene en 2500 milisegundos (2.5 segundos)
+    setTimeout(() => {
+      // 3. Cuando suena la alarma, aprieta el botón 'resolve(true)'
+      // Esto cumple la Promesa y desbloquea a quien estaba esperando con 'await'
+      resolve(true)
+    },2500);
+  });
+}
 
 export class FormUtils {
 
@@ -24,8 +35,8 @@ export class FormUtils {
             return 'El correo electrónico no es permitido';
           }
           return 'Error de patrón contra expresión regular';
-
-        break;
+        case 'emailTaken':
+          return 'El correo electrónico ya está siendo usado por otro usuario';
         default:
           return 'Error de validación no controlado';
       }
@@ -67,6 +78,27 @@ export class FormUtils {
       const field2value = formGroup.get(field2)?.value;
       return field1value === field2value ? null : { passwordsNotEqual: true } ;
     }
+  }
+
+  static async checkingServerResponse(control: AbstractControl):Promise<ValidationErrors | null> {
+    console.log('Validando contra servidor');
+    // await sleep()
+    // Pausa esta función durante 2.5 segundos para simular el tiempo
+    // que tarda internet en ir al servidor y volver.
+    // Durante esos 2.5 segundos, Angular pone el campo en un estado intermedio llamado PENDING
+    await sleep(); // espera 2 seg y medio
+    // una vez pasado el tiempo va a tomar el valor del formulario
+    console.log('Termino el tiempo');
+    // Una vez que se cumplen los 2.5 segundos y el await suelta el freno,
+    // lee el texto exacto que el usuario escribió en ese input.
+    const formValue = control.value;
+
+    if ( formValue === 'hola@mundo.com') {
+      return {
+        emailTaken: true,
+      }
+    }
+    return null;
   }
 
 }
