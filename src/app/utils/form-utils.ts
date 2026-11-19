@@ -3,6 +3,11 @@ import { FormArray, FormGroup, ValidationErrors } from '@angular/forms';
 
 export class FormUtils {
 
+  static namePattern = '([a-zA-Z]+) ([a-zA-Z]+)';
+  static emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
+  static notOnlySpacesPattern = '^[a-zA-Z0-9]+$';
+  static passwordPattern = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$';
+
   static getTextError(errors: ValidationErrors) {
     for (const key of Object.keys(errors)) {
       switch(key) {
@@ -14,6 +19,15 @@ export class FormUtils {
           return `Valor mínimo de ${errors['min'].min}.`;
         case 'email':
           return `El correo electrónico es invalido`;
+        case 'pattern':
+          if (errors['pattern'].requiredPattern === FormUtils.emailPattern) {
+            return 'El correo electrónico no es permitido';
+          }
+          return 'Error de patrón contra expresión regular';
+
+        break;
+        default:
+          return 'Error de validación no controlado';
       }
     }
     return null;
