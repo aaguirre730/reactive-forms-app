@@ -1,6 +1,7 @@
 import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormUtils } from '../../../utils/form-utils';
 
 @Component({
   selector: 'app-basic-page',
@@ -12,6 +13,7 @@ export class BasicPageComponent {
   // formBuilder
 
   private fb = inject(FormBuilder);
+  formUtils = FormUtils;
 
   myForm: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3)] /* validadores sincronos [], validadores asincronos [] */],
@@ -20,28 +22,28 @@ export class BasicPageComponent {
   });
 
   // funcion para validar los campos
-  isValidField(fieldName: string): boolean | null {
-    return (this.myForm.controls[fieldName].errors && this.myForm.controls[fieldName].touched)    // agregamos validación extra para que aparezca solo cuando el input sea tocado
-  };
+  //isValidField(fieldName: string): boolean | null {
+    //return (this.myForm.controls[fieldName].errors && this.myForm.controls[fieldName].touched)    // agregamos validación extra para que aparezca solo cuando el input sea tocado
+  //};
 
-  getFieldError(fieldName: string): string | null {
+  //getFieldError(fieldName: string): string | null {
     // Con el '!' decimos: si el campo NO existe, devuelve null
-    if (!this.myForm.controls[fieldName]) return null
+    ////if (!this.myForm.controls[fieldName]) return null
 
-    const errors = this.myForm.controls[fieldName].errors ?? {};
+    //const errors = this.myForm.controls[fieldName].errors ?? {};
 
-    for (const key of Object.keys(errors)) {
-      switch(key) {
-        case 'required':
-          return 'Este campo es requerido.';
-        case 'minlength':
-          return `Mínimo de ${errors['minlength'].requiredLength} caracteres.`;
-        case 'min':
-          return `Valor mínimo de ${errors['min'].min}.`;
-      }
-    }
-    return null;
-  };
+    //for (const key of Object.keys(errors)) {
+      //switch(key) {
+      //  case 'required':
+      //    return 'Este campo es requerido.';
+     //   case 'minlength':
+     //     return `Mínimo de ${errors['minlength'].requiredLength} caracteres.`;
+     //   case 'min':
+     //     return `Valor mínimo de ${errors['min'].min}.`;
+     // }
+   // }
+   // return null;
+  //};
 
   onSave() {
     if(this.myForm.invalid) {
