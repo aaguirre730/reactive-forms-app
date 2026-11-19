@@ -21,7 +21,7 @@ export class BasicPageComponent {
 
   // funcion para validar los campos
   isValidField(fieldName: string): boolean | null {
-    return !! this.myForm.controls[fieldName].errors;
+    return (this.myForm.controls[fieldName].errors && this.myForm.controls[fieldName].touched)    // agregamos validación extra para que aparezca solo cuando el input sea tocado
   };
 
   getFieldError(fieldName: string): string | null {
@@ -42,6 +42,20 @@ export class BasicPageComponent {
     }
     return null;
   };
+
+  onSave() {
+    if(this.myForm.invalid) {
+      this.myForm.markAllAsTouched();
+      return;
+    }
+
+    console.log(this.myForm.value);
+
+    this.myForm.reset({
+      price: 0,
+      inStorage: 0,
+    });
+  }
 
   /* myForm = new FormGroup({
     name: new FormControl(''),
