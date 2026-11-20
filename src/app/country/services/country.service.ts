@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { map, Observable, of } from 'rxjs';
+import { combineLatest, map, Observable, of } from 'rxjs';
 import { RESTCountryResponse } from '../interfaces/rest-countries.interface';
 import { CountryMapper } from '../mapper/country.mapper';
 import { Country } from '../interfaces/country.interface';
@@ -61,8 +61,17 @@ export class CountryService {
     );
   }
 
-  getCountryBorderByCodes(borders: string[]) {
-    // TODO: por hacer
+  getCountryNameByCodeArray(countryCodes: string[]): Observable<Country[]> {
+    if( !countryCodes || countryCodes.length === 0) return of([]);
+    const countriesRequests: Observable<Country>[] = [];
+    countryCodes.forEach( code => {
+      const request = this.getCountryAlphaCode(code);
+      countriesRequests.push(request);
+    })
+    // combineLatest: combina todas las peticiones en una sola
+    // y espera que todas cumplan de forma exitosa,
+    // si una falla el Observable falla en su totalidad
+    return combineLatest( countriesRequests);
   }
 
 }
