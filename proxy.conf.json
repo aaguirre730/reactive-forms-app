@@ -1,0 +1,7 @@
+{
+  "/countries": {
+    "target": "https://api.restcountries.com",
+    "secure": true,
+    "changeOrigin": true
+  }
+}
